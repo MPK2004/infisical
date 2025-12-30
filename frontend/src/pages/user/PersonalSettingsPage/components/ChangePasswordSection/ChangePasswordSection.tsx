@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
@@ -47,6 +47,9 @@ export const ChangePasswordSection = () => {
     },
     resolver: zodResolver(schema)
   });
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  
   const [errors, setErrors] = useState<Errors>({});
   const [isLoading, setIsLoading] = useState(false);
   const sendSetupPasswordEmail = useSendPasswordSetupEmail();
@@ -119,9 +122,18 @@ export const ChangePasswordSection = () => {
             <FormControl isError={Boolean(error)} errorText={error?.message}>
               <Input
                 placeholder="Old password"
-                type="password"
+                type={showOldPassword ? "text" : "password"}
                 {...field}
                 className="bg-mineshaft-800"
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowOldPassword(!showOldPassword)}
+                    className="cursor-pointer text-gray-400 hover:text-white transition-colors"
+                  >
+                    <FontAwesomeIcon icon={showOldPassword ? faEyeSlash : faEye} />
+                  </button>
+                }
               />
             </FormControl>
           )}
@@ -136,9 +148,25 @@ export const ChangePasswordSection = () => {
             <FormControl isError={Boolean(error)} errorText={error?.message}>
               <Input
                 placeholder="New password"
-                type="password"
+                type={showNewPassword ? "text" : "password"}
                 {...field}
                 className="bg-mineshaft-800"
+                onChange={(e) => {
+                  field.onChange(e);
+                  checkPassword({
+                    password: e.target.value,
+                    setErrors
+                  });
+                }}
+                rightIcon={
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="cursor-pointer text-gray-400 hover:text-white transition-colors"
+                  >
+                    <FontAwesomeIcon icon={showNewPassword ? faEyeSlash : faEye} />
+                  </button>
+                }
               />
             </FormControl>
           )}

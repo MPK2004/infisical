@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { faGithub, faGitlab, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -42,6 +42,7 @@ export const InitialStep = ({
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
   const { config } = useServerConfig();
   const queryParams = new URLSearchParams(window.location.search);
   const [captchaToken, setCaptchaToken] = useState("");
@@ -370,17 +371,24 @@ export const InitialStep = ({
               className="h-10"
             />
           </div>
-          <div className="mt-2 w-1/4 min-w-[21.2rem] rounded-md text-center md:min-w-[20.1rem] lg:w-1/6">
+          <div className="relative mt-2 w-1/4 min-w-[21.2rem] rounded-md text-center md:min-w-[20.1rem] lg:w-1/6">
             <Input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Enter your password..."
               isRequired
               autoComplete="current-password"
               id="current-password"
-              className="select:-webkit-autofill:focus h-10"
+              className="select:-webkit-autofill:focus h-10 pr-10"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
+            >
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </button>
           </div>
           {shouldShowCaptcha && envConfig.CAPTCHA_SITE_KEY && (
             <div className="mt-4">

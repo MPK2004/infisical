@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { initProjectHelper } from "@app/helpers/project";
@@ -8,7 +8,6 @@ import { completeAccountSignup, useSelectOrganization } from "@app/hooks/api/aut
 import { fetchOrganizations } from "@app/hooks/api/organization/queries";
 import { onRequestError } from "@app/hooks/api/reactQuery";
 
-import InputField from "../basic/InputField";
 import checkPassword from "../utilities/checks/password/checkPassword";
 import SecurityClient from "../utilities/SecurityClient";
 import { Button, Input } from "../v2";
@@ -66,6 +65,7 @@ export default function UserInfoStep({
 }: UserInfoStepProps): JSX.Element {
   const [nameError, setNameError] = useState(false);
   const [organizationNameError, setOrganizationNameError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [errors, setErrors] = useState<Errors>({});
 
@@ -190,23 +190,37 @@ export default function UserInfoStep({
             className="h-12"
           />
         </div>
-        <div className="mt-2 flex max-h-60 w-full min-w-[20rem] flex-col items-center justify-center rounded-lg py-2 lg:w-1/6">
-          <InputField
-            label={t("section.password.password")}
-            onChangeHandler={async (pass: string) => {
+        <div className="relative z-0 mt-2 flex w-full min-w-[20rem] flex-col items-center justify-end rounded-lg py-2 lg:w-1/6">
+          <p className="mb-1 ml-1 w-full text-left text-sm font-medium text-bunker-300">
+             {t("section.password.password")}
+          </p>
+          <Input
+            value={password}
+            type={showPassword ? "text" : "password"}
+            isRequired
+            isError={Object.keys(errors).length > 0}
+            autoComplete="new-password"
+            id="new-password"
+            className="h-12"
+            onChange={async (e) => {
+              const pass = e.target.value;
               setPassword(pass);
               await checkPassword({
                 password: pass,
                 setErrors
               });
             }}
-            type="password"
-            value={password}
-            isRequired
-            error={Object.keys(errors).length > 0}
-            autoComplete="new-password"
-            id="new-password"
+            rightIcon={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="cursor-pointer self-end text-gray-400 hover:text-white transition-colors"
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
+            }
           />
+          
           {Object.keys(errors).length > 0 && (
             <div className="mt-4 flex w-full flex-col items-start rounded-md bg-white/5 px-2 py-2">
               <div className="mb-2 text-sm text-gray-400">

@@ -10,17 +10,20 @@ import { TAwsIamAccount, TAwsIamResource } from "./aws-iam-resource";
 import { TKubernetesAccount, TKubernetesResource } from "./kubernetes-resource";
 import { TMySQLAccount, TMySQLResource } from "./mysql-resource";
 import { TPostgresAccount, TPostgresResource } from "./postgres-resource";
+import { TRedisAccount, TRedisResource } from "./redis-resource";
 import { TSSHAccount, TSSHResource } from "./ssh-resource";
 
 export * from "./aws-iam-resource";
 export * from "./kubernetes-resource";
 export * from "./mysql-resource";
 export * from "./postgres-resource";
+export * from "./redis-resource";
 export * from "./ssh-resource";
 
 export type TPamResource =
   | TPostgresResource
   | TMySQLResource
+  | TRedisResource
   | TSSHResource
   | TAwsIamResource
   | TKubernetesResource;
@@ -28,6 +31,7 @@ export type TPamResource =
 export type TPamAccount =
   | TPostgresAccount
   | TMySQLAccount
+  | TRedisAccount
   | TSSHAccount
   | TAwsIamAccount
   | TKubernetesAccount;
@@ -143,13 +147,13 @@ export type TListPamAccountsDTO = {
 
 export type TCreatePamAccountDTO = Pick<
   TPamAccount,
-  "name" | "description" | "credentials" | "projectId" | "resourceId" | "folderId"
+  "name" | "description" | "credentials" | "projectId" | "resourceId" | "folderId" | "requireMfa"
 > & {
   resourceType: PamResourceType;
 };
 
 export type TUpdatePamAccountDTO = Partial<
-  Pick<TPamAccount, "name" | "description" | "credentials">
+  Pick<TPamAccount, "name" | "description" | "credentials" | "requireMfa">
 > & {
   accountId: string;
   resourceType: PamResourceType;

@@ -143,6 +143,7 @@ export enum TableName {
   SnapshotSecretV2 = "secret_snapshot_secrets_v2",
   ProjectSplitBackfillIds = "project_split_backfill_ids",
   UserNotifications = "user_notifications",
+  ScimEvents = "scim_events",
   // Gateway
   OrgGatewayConfig = "org_gateway_config",
   Gateway = "gateways",
@@ -160,6 +161,7 @@ export enum TableName {
   InternalKms = "internal_kms",
   InternalKmsKeyVersion = "internal_kms_key_version",
   TotpConfig = "totp_configs",
+  WebAuthnCredential = "webauthn_credentials",
   // @depreciated
   KmsKeyVersion = "kms_key_versions",
   WorkflowIntegrations = "workflow_integrations",

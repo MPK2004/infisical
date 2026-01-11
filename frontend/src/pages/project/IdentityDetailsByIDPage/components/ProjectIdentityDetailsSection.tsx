@@ -51,7 +51,7 @@ export const ProjectIdentityDetailsSection = ({
   return (
     <>
       <UnstableCard className="w-full lg:max-w-[24rem]">
-        <UnstableCardHeader>
+        <UnstableCardHeader className="border-b">
           <UnstableCardTitle>Details</UnstableCardTitle>
           <UnstableCardDescription>Machine identity details</UnstableCardDescription>
           {!isOrgIdentity && (
@@ -134,7 +134,7 @@ export const ProjectIdentityDetailsSection = ({
                     </UnstableButtonGroup>
                   ))
                 ) : (
-                  <span className="text-muted">No metadata</span>
+                  <span className="text-muted">—</span>
                 )}
               </DetailValue>
             </Detail>
@@ -150,7 +150,7 @@ export const ProjectIdentityDetailsSection = ({
                     {membership.lastLoginAuthMethod ? (
                       identityAuthToNameMap[membership.lastLoginAuthMethod]
                     ) : (
-                      <span className="text-muted">N/A</span>
+                      <span className="text-muted">—</span>
                     )}
                   </DetailValue>
                 </Detail>
@@ -160,7 +160,7 @@ export const ProjectIdentityDetailsSection = ({
                     {membership.lastLoginTime ? (
                       format(membership.lastLoginTime, "PPpp")
                     ) : (
-                      <span className="text-muted">N/A</span>
+                      <span className="text-muted">—</span>
                     )}
                   </DetailValue>
                 </Detail>
